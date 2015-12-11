@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreComponents", "Graphic.Core.ChartComponents\CoreComponents.csproj", "{BBBA32FD-6E11-42C4-AF44-CE164976C832}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChartFlowUI", "ChartFlowUI\ChartFlowUI.csproj", "{A340233C-2D60-46FB-8BA6-B67ED8C5DC85}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBBA32FD-6E11-42C4-AF44-CE164976C832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBBA32FD-6E11-42C4-AF44-CE164976C832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBBA32FD-6E11-42C4-AF44-CE164976C832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBBA32FD-6E11-42C4-AF44-CE164976C832}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A340233C-2D60-46FB-8BA6-B67ED8C5DC85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A340233C-2D60-46FB-8BA6-B67ED8C5DC85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A340233C-2D60-46FB-8BA6-B67ED8C5DC85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A340233C-2D60-46FB-8BA6-B67ED8C5DC85}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
