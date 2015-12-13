@@ -38,6 +38,12 @@ namespace CoreComponents.UIElements
 
             return new PointF(rec.X + (width - size.Width) / 2, rec.Y + (height - size.Height) / 2);
         }
+        public static Point TransforCoordenates(this Rectangle rect,Point initialpoint,Point destinationpoint)
+        {
+            int h = initialpoint.Y - rect.Height;
+            int w = initialpoint.X - rect.Width;
+            return new Point(destinationpoint.X - h, destinationpoint.Y - w);
+        }
     }
 
   

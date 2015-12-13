@@ -102,6 +102,22 @@ namespace CoreComponents.UIElements
                 UIVisualProperties.BackgroundColor = value;
             }
         }
+        private Point centerPoint;
+        public Point CenterPoint
+        {
+            get
+            {
+                int w = DrawableRegion.Width;
+                int h = DrawableRegion.Height;
+                centerPoint = new Point(DrawableRegion.X + w / 2, DrawableRegion.Y + h / 2);
+                return centerPoint;
+            }
+            set
+            {
+                Point pCenter = value;
+                DrawableRegion = new Rectangle(pCenter.X - DrawableRegion.Width / 2, pCenter.Y - (DrawableRegion.Height/2), DrawableRegion.Width, DrawableRegion.Height);
+            }
+        }
 
         public virtual void CalculatePins()
         {

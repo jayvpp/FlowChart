@@ -17,7 +17,7 @@ namespace CoreComponents.UIElements
         bool PointIsInsideChart(Point point);
         void ObjectFocusOff();
         void ObjectFocusOn();
-
+        Point CenterPoint { get; set; }
      
           
     }

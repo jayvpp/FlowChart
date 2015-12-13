@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using CoreComponents.UIElements;
+using System.Diagnostics;
 
 namespace CoreComponents.UIElements.GraphicsManager
 {
@@ -13,12 +14,13 @@ namespace CoreComponents.UIElements.GraphicsManager
         public Graphics GraphicsHandler { get; set; }
         public event EventHandler<IUIPrimitiveObject> ChartWasSelected;
         public event EventHandler RepaintScreen;
+
         public IEnumerable<IUIPrimitiveObject> UIObjects { get; set; }
 
         private IUIPrimitiveObject CurrentChartSelected = null;
 
         private bool IsMouseDown = false;
-       
+
         public GraphicsManager(Graphics graphicsHandler)
         {
             this.GraphicsHandler = graphicsHandler;
@@ -35,36 +37,27 @@ namespace CoreComponents.UIElements.GraphicsManager
             }
         }
 
+
+        Point pointInsideChart;
         public void MouseDown(Point positionOfTheMouse)
         {
-
-            IUIPrimitiveObject previousChart = CurrentChartSelected;
-            foreach (var item in UIObjects)
+            IsMouseDown = true;
+            foreach (var chart in UIObjects)
             {
-                if (item.PointIsInsideChart(positionOfTheMouse))
-                {
-                    CurrentChartSelected = item;
+                if (chart.PointIsInsideChart(positionOfTheMouse)) {
+                    CurrentChartSelected = chart;
                     CurrentChartSelected.IsSelected = true;
                     CurrentChartSelected.ObjectFocusOn();
-                    break;
+                    pointInsideChart = positionOfTheMouse;
+                    ChartWasSelected(this, CurrentChartSelected);
                 }
             }
-            if (!IsMouseDown)
-                if (previousChart != CurrentChartSelected)
-                {
-                    if (CurrentChartSelected != null & ChartWasSelected != null)
-                        ChartWasSelected(this, CurrentChartSelected);
-                }
-            IsMouseDown = true;
         }
         public void MouseMove(Point newMousePosition)
-        {
+        { 
             if (IsMouseDown && CurrentChartSelected != null)
             {
-                Rectangle newRectangle = new Rectangle(newMousePosition.X, newMousePosition.Y,
-                                                       CurrentChartSelected.DrawableRegion.Width,
-                                                       CurrentChartSelected.DrawableRegion.Height);
-                CurrentChartSelected.DrawableRegion = newRectangle;
+                CurrentChartSelected.CenterPoint = newMousePosition;
                 CurrentChartSelected.CalculatePins();
                 if (RepaintScreen == null)
                 {
@@ -72,6 +65,7 @@ namespace CoreComponents.UIElements.GraphicsManager
                 }
                 RepaintScreen(this, null);
             }
+
         }
 
         public void MouseClickUp()
@@ -82,9 +76,9 @@ namespace CoreComponents.UIElements.GraphicsManager
                 CurrentChartSelected.ObjectFocusOff();
                 CurrentChartSelected.IsSelected = false;
             }
+            CurrentChartSelected = null;
         }
 
-      
-
     }
+
 }

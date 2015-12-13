@@ -55,6 +55,7 @@ namespace ChartFlowUI
 
         private void GraphicsManager_ChangePropertyGrid(object sender, IUIPrimitiveObject e)
         {
+
             propertyGrid1.SelectedObject = e;
         }
 
@@ -65,6 +66,7 @@ namespace ChartFlowUI
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            
             GraphicsManager.MouseMove(new Point() { X = e.X, Y = e.Y });
         }
 
