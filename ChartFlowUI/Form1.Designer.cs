@@ -30,25 +30,32 @@
         {
             this.components = new System.ComponentModel.Container();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.AddingChartsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.op1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.op2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button2 = new System.Windows.Forms.Button();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.op1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.op2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ChartConnectionMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ConditionalConnectionMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.connectTrueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectFalseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.AddingChartsMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.ChartConnectionMenu.SuspendLayout();
+            this.ConditionalConnectionMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pictureBox1.ContextMenuStrip = this.contextMenuStrip1;
+            this.pictureBox1.ContextMenuStrip = this.AddingChartsMenu;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
@@ -60,6 +67,28 @@
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             // 
+            // AddingChartsMenu
+            // 
+            this.AddingChartsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.op1ToolStripMenuItem,
+            this.op2ToolStripMenuItem});
+            this.AddingChartsMenu.Name = "contextMenuStrip1";
+            this.AddingChartsMenu.Size = new System.Drawing.Size(169, 48);
+            // 
+            // op1ToolStripMenuItem
+            // 
+            this.op1ToolStripMenuItem.Name = "op1ToolStripMenuItem";
+            this.op1ToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.op1ToolStripMenuItem.Text = "Conditional Chart";
+            this.op1ToolStripMenuItem.Click += new System.EventHandler(this.op1ToolStripMenuItem_Click);
+            // 
+            // op2ToolStripMenuItem
+            // 
+            this.op2ToolStripMenuItem.Name = "op2ToolStripMenuItem";
+            this.op2ToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.op2ToolStripMenuItem.Text = "Standart Chart";
+            this.op2ToolStripMenuItem.Click += new System.EventHandler(this.op2ToolStripMenuItem_Click);
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(441, 505);
@@ -68,7 +97,6 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Create Chart";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // propertyGrid1
             // 
@@ -107,29 +135,44 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "Create Simple";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // contextMenuStrip1
+            // ChartConnectionMenu
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.op1ToolStripMenuItem,
-            this.op2ToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(169, 70);
+            this.ChartConnectionMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2});
+            this.ChartConnectionMenu.Name = "contextMenuStrip1";
+            this.ChartConnectionMenu.Size = new System.Drawing.Size(162, 26);
+            this.ChartConnectionMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ChartConnectionMenu_Opening);
             // 
-            // op1ToolStripMenuItem
+            // toolStripMenuItem2
             // 
-            this.op1ToolStripMenuItem.Name = "op1ToolStripMenuItem";
-            this.op1ToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.op1ToolStripMenuItem.Text = "Conditional Chart";
-            this.op1ToolStripMenuItem.Click += new System.EventHandler(this.op1ToolStripMenuItem_Click);
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(161, 22);
+            this.toolStripMenuItem2.Text = "ConnectChartTo";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
-            // op2ToolStripMenuItem
+            // ConditionalConnectionMenu
             // 
-            this.op2ToolStripMenuItem.Name = "op2ToolStripMenuItem";
-            this.op2ToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.op2ToolStripMenuItem.Text = "Standart Chart";
-            this.op2ToolStripMenuItem.Click += new System.EventHandler(this.op2ToolStripMenuItem_Click);
+            this.ConditionalConnectionMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectTrueToolStripMenuItem,
+            this.connectFalseToolStripMenuItem});
+            this.ConditionalConnectionMenu.Name = "ConditionalConnectionMenu";
+            this.ConditionalConnectionMenu.Size = new System.Drawing.Size(149, 48);
+            this.ConditionalConnectionMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ConditionalConnectionMenu_Opening);
+            // 
+            // connectTrueToolStripMenuItem
+            // 
+            this.connectTrueToolStripMenuItem.Name = "connectTrueToolStripMenuItem";
+            this.connectTrueToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.connectTrueToolStripMenuItem.Text = "Connect True";
+            this.connectTrueToolStripMenuItem.Click += new System.EventHandler(this.connectTrueToolStripMenuItem_Click);
+            // 
+            // connectFalseToolStripMenuItem
+            // 
+            this.connectFalseToolStripMenuItem.Name = "connectFalseToolStripMenuItem";
+            this.connectFalseToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.connectFalseToolStripMenuItem.Text = "Connect False";
+            this.connectFalseToolStripMenuItem.Click += new System.EventHandler(this.connectFalseToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -141,11 +184,13 @@
             this.Text = "FlowChart Editor";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.AddingChartsMenu.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.ChartConnectionMenu.ResumeLayout(false);
+            this.ConditionalConnectionMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -156,9 +201,14 @@
         private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ContextMenuStrip AddingChartsMenu;
         private System.Windows.Forms.ToolStripMenuItem op1ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem op2ToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip ChartConnectionMenu;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ContextMenuStrip ConditionalConnectionMenu;
+        private System.Windows.Forms.ToolStripMenuItem connectTrueToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem connectFalseToolStripMenuItem;
     }
 }
 

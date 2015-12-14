@@ -210,10 +210,10 @@ namespace CoreComponents.UIElements
 
         private void DrawConnectionArrow(Graphics g, IConnection connection)
         {
-             
+
             //ToolBox.Pen.EndCap = System.Drawing.Drawing2D.LineCap.DiamondAnchor;
-            ToolBox.Pen.CustomEndCap = new  System.Drawing.Drawing2D.AdjustableArrowCap(5, 5);
-            ToolBox.Pen.Width = 2;
+            ToolBox.Pen.StartCap = System.Drawing.Drawing2D.LineCap.RoundAnchor;
+            ToolBox.Pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
             ToolBox.Pen.Color = Color.Black;
 
             IUIPrimitiveObject InitiatorChart = connection.InitiatorChart as IUIPrimitiveObject;

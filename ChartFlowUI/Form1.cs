@@ -16,12 +16,15 @@ using CoreComponents.ObjectRepository;
 
 namespace ChartFlowUI
 {
+
+
     public partial class Form1 : Form
     {
         static Random r = new Random(50);
         GraphicsManager GraphicsManager;
         FlowChartRepository Repository;
-
+        ConnectionConfiguration ChartConnectionInfo = new ConnectionConfiguration();
+  
         List<IUIPrimitiveObject> listOfObjects = new List<IUIPrimitiveObject>();
        
    
@@ -57,11 +60,34 @@ namespace ChartFlowUI
         {
 
             propertyGrid1.SelectedObject = e;
+            Point pointInClient = pictureBox1.PointToScreen(e.CenterPoint);
+  
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Right)
+            {
+                AddingChartsMenu.Show(pictureBox1, e.Location);
+            }
+            else
+            {
+                IUIPrimitiveObject chartWasClicked = GraphicsManager.PointInInsideChart(e.Location);
+                ChartConnectionInfo.chartFrom = chartWasClicked as Chart;
+                if (chartWasClicked != null)
+                {
+                    if (chartWasClicked is UIStandartChart) {
+                        ChartConnectionMenu.Show(pictureBox1, e.Location);
+                    }
+                    if (chartWasClicked is UIConditionalChart) {
+                        ConditionalConnectionMenu.Show(pictureBox1, e.Location);
+                    }
+                }
+          
+            }
+
             GraphicsManager.MouseClickUp();
+
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
@@ -72,6 +98,26 @@ namespace ChartFlowUI
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+            if (ChartConnectionInfo.tryingToConnect)
+            {
+                Chart chart = GraphicsManager.PointInInsideChart(new Point(e.X, e.Y)) as Chart;
+                ChartConnectionInfo.chartTo = chart;
+                if (ChartConnectionInfo.chartTo != null)
+                {
+                    if(ChartConnectionInfo.chartFrom is UIStandartChart)
+                    {
+                        ChartConnectionInfo.chartFrom.ConnectChartWith(chart, ChartConnectionInfo.bindingType);
+                    }
+                    if (ChartConnectionInfo.chartFrom is UIConditionalChart)
+                    {
+                        ChartConnectionInfo.chartFrom.ConnectChartWith(chart, ChartConnectionInfo.bindingType);
+                    }
+
+                    ChartConnectionInfo.Reset();
+                    pictureBox1.Invalidate();
+                }
+                return;
+            }
             if (e.Button == MouseButtons.Left)
             {
                 Point mouseCursor = new Point(e.X, e.Y);
@@ -79,32 +125,15 @@ namespace ChartFlowUI
             }
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        {
 
-       
-        }
 
         private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             pictureBox1.Invalidate();
         }
 
-        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-
-        }
-
+   
+    
         private void op2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var standartChart = ChartFactory.GetFactoryInstance.CreateStandartUIChart();
@@ -123,5 +152,34 @@ namespace ChartFlowUI
             Repository.Insert(decitionChart);
             pictureBox1.Invalidate();
         }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            ChartConnectionInfo.tryingToConnect = true;
+            ChartConnectionInfo.bindingType = BindingType.Standart;
+        }
+
+        private void ChartConnectionMenu_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void ConditionalConnectionMenu_Opening(object sender, CancelEventArgs e)
+        {
+       
+        }
+
+        private void connectTrueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChartConnectionInfo.tryingToConnect = true;
+            ChartConnectionInfo.bindingType = BindingType.ToTrue;
+        }
+
+        private void connectFalseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChartConnectionInfo.tryingToConnect = true;
+            ChartConnectionInfo.bindingType = BindingType.ToFalse;
+        }
     }
+
 }

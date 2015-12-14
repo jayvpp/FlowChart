@@ -117,6 +117,19 @@ namespace CoreComponents.Model.Charts
         }
 
     }
+    public class ConnectionConfiguration
+    {
+        public Chart chartFrom;
+        public Chart chartTo;
+        public bool tryingToConnect = false;
+        public BindingType bindingType;
+        public void Reset()
+        {
+            chartFrom = null;
+            chartTo = null;
+            tryingToConnect = false;
+        }
+    }
 
     public class EndChart
     {

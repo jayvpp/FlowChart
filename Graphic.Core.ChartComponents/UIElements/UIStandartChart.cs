@@ -212,7 +212,9 @@ namespace CoreComponents.UIElements
         }
         private void DrawConnectionArrow(Graphics g, IConnection connection)
         {
-            ToolBox.Pen.StartCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+            ToolBox.Pen.StartCap = System.Drawing.Drawing2D.LineCap.RoundAnchor;
+            ToolBox.Pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+
             ToolBox.Pen.Width = 2;
             ToolBox.Pen.Color = Color.Black;
             IUIPrimitiveObject InitiatorChart = connection.InitiatorChart as IUIPrimitiveObject;
@@ -220,7 +222,7 @@ namespace CoreComponents.UIElements
 
             Point pinOutPoint = InitiatorChart.PinOut.ToList()[0];
             Point pinInPoint = TargetChart.PinIn.ToList()[0];
-
+        
             g.DrawLine(ToolBox.Pen, pinOutPoint, pinInPoint);
 
         }

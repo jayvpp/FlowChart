@@ -37,7 +37,17 @@ namespace CoreComponents.UIElements.GraphicsManager
             }
         }
 
-
+        public IUIPrimitiveObject PointInInsideChart(Point point)
+        {
+            foreach (var chart in UIObjects)
+            {
+                if (chart.PointIsInsideChart(point))
+                {
+                    return chart;
+                }
+            }
+            return null;
+        }
         Point pointInsideChart;
         public void MouseDown(Point positionOfTheMouse)
         {
