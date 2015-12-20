@@ -10,7 +10,6 @@ namespace CoreComponents.Model.Charts
 {
     public abstract class Chart : IIdentificable, IChart
     {
-
         public event EventHandler<string> ChartTextChanged;
         public const int MaxElement = 100;
         private string text;
@@ -25,7 +24,9 @@ namespace CoreComponents.Model.Charts
         [Browsable(false)]
         public List<IChart> ChartsIn { get; protected set; }
 
-        public abstract IConnection ConnectChartWith(IChart chart, BindingType bindingType);
+        public  abstract IConnection ConnectChartWith(IChart chart, BindingType bindingType);
+    
+
         protected Chart()
         {
             this.Id = ++ChartId;
@@ -39,96 +40,87 @@ namespace CoreComponents.Model.Charts
             }
             set
             {
-                if (text != value)
-                {
-                    text = value;
-                    if (ChartTextChanged != null)
-                    {
-                        ChartTextChanged(this, value);
-                    }
-                }
+                if (text == value) return;
+                text = value;
+                ChartTextChanged?.Invoke(this, value);
             }
         }
         [Browsable(false)]
-        public int GetChartsOutCount
-        {
-            get
-            {
-                return ChartsOut.Length;
-            }
-        }
-        [Browsable(false)]
-        public int GetChartsInCount
-        {
-            get
-            {
-                return ChartsIn.Count;
-            }
-        }
-        [Browsable(false)]
-        public IEnumerable<IChart> GetChartElementsIn
-        {
-            get
-            {
-                return ChartsIn;
-            }
-        }
-        [Browsable(false)]
-        public IEnumerable<IChart> GetChartElementsOut
-        {
-            get
-            {
-                return ChartsOut;
-            }
-        }
-        [Browsable(false)]
-        public IEnumerable<IConnection> GetConnectionsIn
-        {
-            get
-            {
-                return ConnectionsIn;
-            }
-        }
-        [Browsable(false)]
-        public IEnumerable<IConnection> GetConnectionOut
-        {
-            get
-            {
-                return ConnectionsOut;
-            }
-        }
+        public int GetChartsOutCount => ChartsOut.Length;
 
-    
+        [Browsable(false)]
+        public int GetChartsInCount => ChartsIn.Count;
+
+        [Browsable(false)]
+        public IEnumerable<IChart> GetChartElementsIn => ChartsIn;
+
+        [Browsable(false)]
+        public IEnumerable<IChart> GetChartElementsOut => ChartsOut;
+
+        [Browsable(false)]
+        public IEnumerable<IConnection> GetConnectionsIn => ConnectionsIn;
+
+        [Browsable(false)]
+        public IEnumerable<IConnection> GetConnectionOut => ConnectionsOut;
+
+
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
             Chart theObj = obj as Chart;
             if (theObj == null) return false;
-            else return Equals(theObj as Chart);
+            else return Equals(other: (Chart) theObj);
         }
         public bool Equals(Chart other)
         {
-            if (other == null) return false;
-            return this.Id == other.Id;
+            return this.Id == other?.Id;
         }
         public override int GetHashCode()
         {
+            // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
             return base.GetHashCode();
         }
 
     }
     public class ConnectionConfiguration
     {
-        public Chart chartFrom;
-        public Chart chartTo;
-        public bool tryingToConnect = false;
-        public BindingType bindingType;
+        public Chart ChartFrom { get; set; }
+        public Chart ChartTo { get; set; }
+        public bool TryingToConnect { get; set; }
+        public BindingType BindingType { get; set; }
+        public ConnectionConfiguration(Chart from,Chart to, BindingType bindingType)
+        {
+            this.ChartFrom = from;
+            this.ChartTo = to;
+            this.BindingType = bindingType;
+            this.TryingToConnect = false;
+        }
+        public ConnectionConfiguration()
+        {
+
+        }
         public void Reset()
         {
-            chartFrom = null;
-            chartTo = null;
-            tryingToConnect = false;
+            ChartFrom = null;
+            ChartTo = null;
+            TryingToConnect = false;
         }
+
+        //public void SetTryingToConnect()
+        //{
+        //    this.tryingToConnect = true;
+        //}
+        //public void SetConnectionInfoFrom(Chart chartFrom)
+        //{
+        //    this.chartFrom = chartFrom;
+        //    this.tryingToConnect = true;
+        //}
+        //public void SetConnectionInfoTo(Chart chartTo)
+        //{
+        //    this.chartTo = chartTo;
+        //    this.tryingToConnect = true;
+        //}
+     
     }
 
     public class EndChart

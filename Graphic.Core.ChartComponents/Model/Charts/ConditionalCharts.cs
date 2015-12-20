@@ -17,7 +17,6 @@ namespace CoreComponents.Model.Charts
             ChartsOut = new IChart[2];   //0 True, 1 False
         }
 
-
         public override IConnection ConnectChartWith(IChart chart, BindingType bindingType)
         {
             if (bindingType == BindingType.Standart) throw new InvalidOperationException();

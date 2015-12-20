@@ -53,6 +53,7 @@
     <Compile Include="ObjectRepository\IRepository.cs" />
     <Compile Include="ObjectRepository\Repository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIElements\FlowChartManager.cs" />
     <Compile Include="UIElements\ToolBox.cs" />
     <Compile Include="UIElements\UIConditionalChart.cs" />
     <Compile Include="UIElements\GraphicsManager\GraphicsManager.cs" />

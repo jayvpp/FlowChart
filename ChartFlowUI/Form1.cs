@@ -16,27 +16,46 @@ using CoreComponents.ObjectRepository;
 
 namespace ChartFlowUI
 {
-
-
     public partial class Form1 : Form
     {
-        static Random r = new Random(50);
-        GraphicsManager GraphicsManager;
-        FlowChartRepository Repository;
-        ConnectionConfiguration ChartConnectionInfo = new ConnectionConfiguration();
+        readonly GraphicsManager GraphicsManager;
+        readonly FlowChartRepository Repository;
+
+        readonly FlowChartManager FlowChartManager;
+
   
-        List<IUIPrimitiveObject> listOfObjects = new List<IUIPrimitiveObject>();
-       
-   
-        public bool mouseDown = false;
         public Form1()
         {
+            InitializeComponent();
             GraphicsManager = new GraphicsManager();
             Repository = new FlowChartRepository();
+
+            FlowChartManager = new FlowChartManager(Repository);
+            FlowChartManager.DisplayConnectMenu += FlowChatManager_DisplayConnectMenu;
+            FlowChartManager.RepaintScreen+= GraphicsManager_RepaintScreen;
+            
+
             GraphicsManager.ChartWasSelected += GraphicsManager_ChangePropertyGrid;
             GraphicsManager.RepaintScreen += GraphicsManager_RepaintScreen;
-            InitializeComponent();
-       
+            GraphicsManager.UIObjects = Repository.GetCharts();
+        }
+
+        private void FlowChatManager_DisplayConnectMenu(FlowChartMouseArg arg)
+        {
+            if (arg.Obj is UIStandartChart)
+            {
+                //fix this to update the property from the FlowChatManager
+                //FlowChartManager.SetConnectionInfoFrom(arg.Obj as Chart);
+                FlowChartManager.ConnectionConfig.ChartFrom = (Chart) arg.Obj;
+                StandartConnectionMenu.Show(pictureBox1, arg.Location);
+            }
+            if (arg.Obj is UIConditionalChart)
+            {
+                //same fix here.
+                //FlowChartManager.SetConnectionInfoTo(arg.Obj as Chart); 
+                FlowChartManager.ConnectionConfig.ChartFrom = (Chart) arg.Obj;
+                ConditionalConnectionMenu.Show(pictureBox1, arg.Location);
+            }
         }
 
         private void GraphicsManager_RepaintScreen(object sender, EventArgs e)
@@ -44,10 +63,6 @@ namespace ChartFlowUI
             pictureBox1.Invalidate();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
@@ -58,127 +73,98 @@ namespace ChartFlowUI
 
         private void GraphicsManager_ChangePropertyGrid(object sender, IUIPrimitiveObject e)
         {
-
             propertyGrid1.SelectedObject = e;
-            Point pointInClient = pictureBox1.PointToScreen(e.CenterPoint);
-  
+            //Point pointInClient = pictureBox1.PointToScreen(e.CenterPoint);
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-            {
-                AddingChartsMenu.Show(pictureBox1, e.Location);
-            }
-            else
-            {
-                IUIPrimitiveObject chartWasClicked = GraphicsManager.PointInInsideChart(e.Location);
-                ChartConnectionInfo.chartFrom = chartWasClicked as Chart;
-                if (chartWasClicked != null)
-                {
-                    if (chartWasClicked is UIStandartChart) {
-                        ChartConnectionMenu.Show(pictureBox1, e.Location);
-                    }
-                    if (chartWasClicked is UIConditionalChart) {
-                        ConditionalConnectionMenu.Show(pictureBox1, e.Location);
-                    }
-                }
-          
-            }
-
             GraphicsManager.MouseClickUp();
-
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            
             GraphicsManager.MouseMove(new Point() { X = e.X, Y = e.Y });
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (ChartConnectionInfo.tryingToConnect)
+            var mouseCursor = new Point(e.X, e.Y);
+            if (e.Button == MouseButtons.Right)
             {
-                Chart chart = GraphicsManager.PointInInsideChart(new Point(e.X, e.Y)) as Chart;
-                ChartConnectionInfo.chartTo = chart;
-                if (ChartConnectionInfo.chartTo != null)
-                {
-                    if(ChartConnectionInfo.chartFrom is UIStandartChart)
-                    {
-                        ChartConnectionInfo.chartFrom.ConnectChartWith(chart, ChartConnectionInfo.bindingType);
-                    }
-                    if (ChartConnectionInfo.chartFrom is UIConditionalChart)
-                    {
-                        ChartConnectionInfo.chartFrom.ConnectChartWith(chart, ChartConnectionInfo.bindingType);
-                    }
-
-                    ChartConnectionInfo.Reset();
-                    pictureBox1.Invalidate();
-                }
-                return;
+                FlowChartManager.MouseDown(e.Location);
             }
+
             if (e.Button == MouseButtons.Left)
             {
-                Point mouseCursor = new Point(e.X, e.Y);
-                GraphicsManager.MouseDown(mouseCursor);
+                var connectionSucced = FlowChartManager.TryToPerformConnection(e.Location);
+                if (!connectionSucced)
+                {
+                    GraphicsManager.MouseDown(mouseCursor);
+                }
             }
+            //if (FlowChartManager.ConnectionConfig.TryingToConnect)
+            //{
+            //    IUIPrimitiveObject chartTarget = GraphicsManager.PointInInsideChart(e.Location);
+
+            //    if (chartTarget != null)
+            //    {
+            //        FlowChartManager.ConnectionConfig.ChartTo = chartTarget as Chart;
+
+            //        FlowChartManager.PerformConnection();
+            //        pictureBox1.Refresh();
+            //        return;
+            //    }
+            //}
         }
-
-
 
         private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             pictureBox1.Invalidate();
         }
-
-   
     
-        private void op2ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var standartChart = ChartFactory.GetFactoryInstance.CreateStandartUIChart();
-
-            standartChart.Text = "Standart " + standartChart.Id;
-            Repository.Insert(standartChart);
-            pictureBox1.Invalidate();
-
-        }
-
-        private void op1ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var decitionChart = ChartFactory.GetFactoryInstance.CreateConditionalUIChart();
-
-            decitionChart.Text = "Decition " + decitionChart.Id;
-            Repository.Insert(decitionChart);
-            pictureBox1.Invalidate();
-        }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            ChartConnectionInfo.tryingToConnect = true;
-            ChartConnectionInfo.bindingType = BindingType.Standart;
-        }
-
-        private void ChartConnectionMenu_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void ConditionalConnectionMenu_Opening(object sender, CancelEventArgs e)
-        {
-       
+            this.SetConnection(BindingType.Standart);
         }
 
         private void connectTrueToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChartConnectionInfo.tryingToConnect = true;
-            ChartConnectionInfo.bindingType = BindingType.ToTrue;
+            this.SetConnection(BindingType.ToTrue);
         }
 
         private void connectFalseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChartConnectionInfo.tryingToConnect = true;
-            ChartConnectionInfo.bindingType = BindingType.ToFalse;
+            this.SetConnection(BindingType.ToFalse);
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            FlowChartManager.AddNewConditionalChart();
+            pictureBox1.Invalidate();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            FlowChartManager.AddNewStandartChart();
+            pictureBox1.Invalidate();
+        }
+
+        private void connectToToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SetConnection(BindingType.Standart);
+        }
+
+        private  void SetConnection(BindingType bindingType)
+        {
+            FlowChartManager.ConnectionConfig.TryingToConnect = true;
+            FlowChartManager.ConnectionConfig.BindingType = bindingType;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 
