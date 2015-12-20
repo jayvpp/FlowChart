@@ -20,7 +20,6 @@ namespace ChartFlowUI
     {
         readonly GraphicsManager GraphicsManager;
         readonly FlowChartRepository Repository;
-
         readonly FlowChartManager FlowChartManager;
 
   
@@ -29,30 +28,27 @@ namespace ChartFlowUI
             InitializeComponent();
             GraphicsManager = new GraphicsManager();
             Repository = new FlowChartRepository();
-
             FlowChartManager = new FlowChartManager(Repository);
+
+
             FlowChartManager.DisplayConnectMenu += FlowChatManager_DisplayConnectMenu;
             FlowChartManager.RepaintScreen+= GraphicsManager_RepaintScreen;
-            
-
             GraphicsManager.ChartWasSelected += GraphicsManager_ChangePropertyGrid;
             GraphicsManager.RepaintScreen += GraphicsManager_RepaintScreen;
-            GraphicsManager.UIObjects = Repository.GetCharts();
+
+            GraphicsManager.UiObjects = Repository.GetCharts();
         }
 
         private void FlowChatManager_DisplayConnectMenu(FlowChartMouseArg arg)
         {
             if (arg.Obj is UIStandartChart)
             {
-                //fix this to update the property from the FlowChatManager
-                //FlowChartManager.SetConnectionInfoFrom(arg.Obj as Chart);
                 FlowChartManager.ConnectionConfig.ChartFrom = (Chart) arg.Obj;
                 StandartConnectionMenu.Show(pictureBox1, arg.Location);
             }
             if (arg.Obj is UIConditionalChart)
             {
-                //same fix here.
-                //FlowChartManager.SetConnectionInfoTo(arg.Obj as Chart); 
+ 
                 FlowChartManager.ConnectionConfig.ChartFrom = (Chart) arg.Obj;
                 ConditionalConnectionMenu.Show(pictureBox1, arg.Location);
             }
@@ -67,14 +63,14 @@ namespace ChartFlowUI
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             GraphicsManager.GraphicsHandler = e.Graphics;
-            GraphicsManager.UIObjects = Repository.GetCharts();
+            GraphicsManager.UiObjects = Repository.GetCharts();
             GraphicsManager.DrawAllObjects();
         }
 
-        private void GraphicsManager_ChangePropertyGrid(object sender, IUIPrimitiveObject e)
+        private void GraphicsManager_ChangePropertyGrid(object sender, IUiPrimitiveObject e)
         {
             propertyGrid1.SelectedObject = e;
-            //Point pointInClient = pictureBox1.PointToScreen(e.CenterPoint);
+ 
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
@@ -103,19 +99,6 @@ namespace ChartFlowUI
                     GraphicsManager.MouseDown(mouseCursor);
                 }
             }
-            //if (FlowChartManager.ConnectionConfig.TryingToConnect)
-            //{
-            //    IUIPrimitiveObject chartTarget = GraphicsManager.PointInInsideChart(e.Location);
-
-            //    if (chartTarget != null)
-            //    {
-            //        FlowChartManager.ConnectionConfig.ChartTo = chartTarget as Chart;
-
-            //        FlowChartManager.PerformConnection();
-            //        pictureBox1.Refresh();
-            //        return;
-            //    }
-            //}
         }
 
         private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)

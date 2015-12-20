@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace CoreComponents.UIElements
 {
-    public class UIStandartChart : StandartChart, IUIPrimitiveObject , IObjectVisualProperties
+    public class UIStandartChart : StandartChart, IUiPrimitiveObject , IObjectVisualProperties
     {
  
         public UIVisualProperties UIVisualProperty = new UIVisualProperties();
@@ -25,7 +25,7 @@ namespace CoreComponents.UIElements
 
         public Rectangle DrawableRegion { get; set; }
 
-        public UIVisualProperties UIVisualProperties
+        public UIVisualProperties UiVisualProperties
         {
             get
             {
@@ -41,12 +41,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UIVisualProperties.Font;
+                return UiVisualProperties.Font;
             }
 
             set
             {
-                UIVisualProperties.Font = value;
+                UiVisualProperties.Font = value;
             }
         }
 
@@ -54,12 +54,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UIVisualProperties.BorderColor;
+                return UiVisualProperties.BorderColor;
             }
 
             set
             {
-                UIVisualProperties.BorderColor = value;
+                UiVisualProperties.BorderColor = value;
             }
         }
 
@@ -67,12 +67,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UIVisualProperties.TextColor;
+                return UiVisualProperties.TextColor;
             }
 
             set
             {
-                UIVisualProperties.TextColor = value;
+                UiVisualProperties.TextColor = value;
             }
         }
 
@@ -80,12 +80,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UIVisualProperties.BorderWidth;
+                return UiVisualProperties.BorderWidth;
             }
 
             set
             {
-                UIVisualProperties.BorderWidth = value;
+                UiVisualProperties.BorderWidth = value;
  
             }
         }
@@ -94,12 +94,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UIVisualProperties.BackgroundColor;
+                return UiVisualProperties.BackgroundColor;
             }
 
             set
             {
-                UIVisualProperties.BackgroundColor = value;
+                UiVisualProperties.BackgroundColor = value;
             }
         }
         private Point centerPoint;
@@ -159,8 +159,8 @@ namespace CoreComponents.UIElements
             g.DrawRectangle(ToolBox.Pen, DrawableRegion);
             g.FillRectangle(ToolBox.SolidBrush, DrawableRegion);
             ToolBox.SetSolidBrushColor(UIVisualProperty.TextColor);
-            SizeF sizeFont = g.MeasureString(Text, UIVisualProperties.Font);
-            g.DrawString(Text, UIVisualProperties.Font, ToolBox.SolidBrush, DrawableRegion.TextCoordenates(sizeFont));
+            SizeF sizeFont = g.MeasureString(Text, UiVisualProperties.Font);
+            g.DrawString(Text, UiVisualProperties.Font, ToolBox.SolidBrush, DrawableRegion.TextCoordenates(sizeFont));
             //DrawPins(g);
             DrawConnections(g);
         }
@@ -217,8 +217,8 @@ namespace CoreComponents.UIElements
 
             ToolBox.Pen.Width = 2;
             ToolBox.Pen.Color = Color.Black;
-            IUIPrimitiveObject InitiatorChart = connection.InitiatorChart as IUIPrimitiveObject;
-            IUIPrimitiveObject TargetChart = connection.TargetChart as IUIPrimitiveObject;
+            IUiPrimitiveObject InitiatorChart = connection.InitiatorChart as IUiPrimitiveObject;
+            IUiPrimitiveObject TargetChart = connection.TargetChart as IUiPrimitiveObject;
 
             Point pinOutPoint = InitiatorChart.PinOut.ToList()[0];
             Point pinInPoint = TargetChart.PinIn.ToList()[0];

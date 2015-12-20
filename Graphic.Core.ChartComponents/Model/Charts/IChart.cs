@@ -10,21 +10,12 @@ namespace CoreComponents.Model.Charts
     public interface IChart : IIdentificable
     {
         string Text { get; set; }
-
         int GetChartsOutCount { get; }
-
         int GetChartsInCount { get; }
-
         IEnumerable<IChart> GetChartElementsIn { get; }
-
         IEnumerable<IChart> GetChartElementsOut { get; }
-
-
         IEnumerable<IConnection> GetConnectionsIn { get; }
-
-
         IEnumerable<IConnection> GetConnectionOut { get; }
-
         List<IConnection> ConnectionsIn { get; }
         IConnection[] ConnectionsOut { get; }
         IChart[] ChartsOut { get; }

@@ -49,7 +49,6 @@
     <Compile Include="Model\Charts\IChart.cs" />
     <Compile Include="Model\IConnection.cs" />
     <Compile Include="Model\IIdentificable.cs" />
-    <Compile Include="Model\ISingleConnectorChart.cs" />
     <Compile Include="ObjectRepository\IRepository.cs" />
     <Compile Include="ObjectRepository\Repository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

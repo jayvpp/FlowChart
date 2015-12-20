@@ -14,7 +14,7 @@ namespace CoreComponents.Model.Charts
             ConnectionsOut = new IConnection[1];
             ChartsIn = new List<IChart>(MaxElement);
             ChartsOut = new IChart[1];
-            Text = String.Format("Chart Id{0}", Id);
+            Text = $"Chart Id{Id}";
         }
 
 
@@ -22,7 +22,7 @@ namespace CoreComponents.Model.Charts
         {
             if (bindingType != BindingType.Standart)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException($"Cannot use BindignType {bindingType} in StandartChart");
             }
             IConnection connection = new Connection(this, chart, BindingType.Standart);
 

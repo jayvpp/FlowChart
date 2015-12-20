@@ -11,6 +11,11 @@ using CoreComponents.Model;
 
 namespace CoreComponents.UIElements
 {
+    /// <summary>
+    /// FlowChartManager is in charge of performing the all the connection in the underling repository.
+    /// Also, FlowChartManager is in charge of keep track of the process of connect Charts. This class is responsible
+    /// for exposing to the client all methods that can be perform in the UI such as MouseDown,
+    /// </summary>
     public class FlowChartManager
     {
         public FlowChartRepository Repository { get; }
@@ -50,9 +55,14 @@ namespace CoreComponents.UIElements
         {
             if (ConnectionConfig.TryingToConnect)
             {
-                IUIPrimitiveObject chartTarget = Repository.GetCharts().First(c => c.PointIsInsideChart(position));
+                var charts = Repository.GetCharts().Where(c => c.PointIsInsideChart(position));
+                var chartTarget = (charts.Any()) ? charts.First() : null;
 
-                if (chartTarget == null) return false;
+                if (chartTarget == null)
+                {
+                    ConnectionConfig.Reset();
+                    return false;
+                }
                 ConnectionConfig.ChartTo = (Chart)chartTarget;
                 PerformConnection();
                 RepaintScreen?.Invoke(this, null);
@@ -68,15 +78,15 @@ namespace CoreComponents.UIElements
             {
                 throw new InvalidOperationException("Cannot connect Charts when some parameter is null");
             }
-            Chart Initiator = ConnectionConfig.ChartFrom;
-            Chart Target = ConnectionConfig.ChartTo;
-            BindingType type = ConnectionConfig.BindingType;
+            var initiator = ConnectionConfig.ChartFrom;
+            var target = ConnectionConfig.ChartTo;
+            var type = ConnectionConfig.BindingType;
 
-            Initiator.ConnectChartWith(Target, type);
-            resetChartConnectionInfo();
+            initiator.ConnectChartWith(target, type);
+            ResetChartConnectionInfo();
 
         }
-        private void resetChartConnectionInfo()
+        private void ResetChartConnectionInfo()
         {
             ConnectionConfig.ChartFrom = null;
             ConnectionConfig.ChartTo = null;
@@ -103,9 +113,9 @@ namespace CoreComponents.UIElements
     }
     public class FlowChartMouseArg : EventArgs
     {
-        public IUIPrimitiveObject Obj { get;}
+        public IUiPrimitiveObject Obj { get;}
         public Point Location { get;}
-        public FlowChartMouseArg(IUIPrimitiveObject obj, Point location)
+        public FlowChartMouseArg(IUiPrimitiveObject obj, Point location)
         {
             Obj = obj;
             Location = location;

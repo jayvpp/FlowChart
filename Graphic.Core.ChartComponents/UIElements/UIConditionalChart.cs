@@ -7,7 +7,7 @@ using CoreComponents.Model.Charts;
 
 namespace CoreComponents.UIElements
 {
-    public class UIConditionalChart : ConditionalChart, IUIPrimitiveObject ,IObjectVisualProperties
+    public class UIConditionalChart : ConditionalChart, IUiPrimitiveObject ,IObjectVisualProperties
     {
         public UIVisualProperties UIVisualProperty;
 
@@ -34,7 +34,7 @@ namespace CoreComponents.UIElements
             }
         }
 
-        public UIVisualProperties UIVisualProperties
+        public UIVisualProperties UiVisualProperties
         {
             get
             {
@@ -51,12 +51,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UIVisualProperties.Font;
+                return UiVisualProperties.Font;
             }
 
             set
             {
-                UIVisualProperties.Font = value;
+                UiVisualProperties.Font = value;
             }
         }
 
@@ -65,12 +65,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UIVisualProperties.BorderColor;
+                return UiVisualProperties.BorderColor;
             }
 
             set
             {
-                UIVisualProperties.BorderColor = value;
+                UiVisualProperties.BorderColor = value;
             }
         }
 
@@ -78,12 +78,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UIVisualProperties.TextColor;
+                return UiVisualProperties.TextColor;
             }
 
             set
             {
-                UIVisualProperties.TextColor = value;
+                UiVisualProperties.TextColor = value;
             }
         }
 
@@ -91,12 +91,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UIVisualProperties.BorderWidth;
+                return UiVisualProperties.BorderWidth;
             }
 
             set
             {
-                UIVisualProperties.BorderWidth = value;
+                UiVisualProperties.BorderWidth = value;
  
             }
         }
@@ -105,12 +105,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UIVisualProperties.BackgroundColor;
+                return UiVisualProperties.BackgroundColor;
             }
 
             set
             {
-                UIVisualProperties.BackgroundColor = value;
+                UiVisualProperties.BackgroundColor = value;
             }
         }
 
@@ -171,9 +171,9 @@ namespace CoreComponents.UIElements
             g.DrawLine(ToolBox.Pen, p2, p3);
             g.DrawLine(ToolBox.Pen, p3, p4);
             g.DrawLine(ToolBox.Pen, p4, p1);
-            g.FillPolygon(ToolBox.SetSolidBrushColor(UIVisualProperties.BackgroundColor), new[] { p1, p2, p3, p4, p1 });
-            SizeF sizeFont = g.MeasureString(Text, UIVisualProperties.Font);
-            g.DrawString(Text, UIVisualProperties.Font, ToolBox.SetSolidBrushColor(UIVisualProperties.TextColor), DrawableRegion.TextCoordenates(sizeFont));
+            g.FillPolygon(ToolBox.SetSolidBrushColor(UiVisualProperties.BackgroundColor), new[] { p1, p2, p3, p4, p1 });
+            SizeF sizeFont = g.MeasureString(Text, UiVisualProperties.Font);
+            g.DrawString(Text, UiVisualProperties.Font, ToolBox.SetSolidBrushColor(UiVisualProperties.TextColor), DrawableRegion.TextCoordenates(sizeFont));
             DrawConnections(g);
         }
         public  void ObjectFocusOn()
@@ -216,8 +216,8 @@ namespace CoreComponents.UIElements
             ToolBox.Pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
             ToolBox.Pen.Color = Color.Black;
 
-            IUIPrimitiveObject InitiatorChart = connection.InitiatorChart as IUIPrimitiveObject;
-            IUIPrimitiveObject TargetChart = connection.TargetChart as IUIPrimitiveObject;
+            IUiPrimitiveObject InitiatorChart = connection.InitiatorChart as IUiPrimitiveObject;
+            IUiPrimitiveObject TargetChart = connection.TargetChart as IUiPrimitiveObject;
 
             Point pinOutPoint = InitiatorChart.PinOut.ToList()[(int)connection.ConnectionType - 1];
             Point pinInPoint = TargetChart.PinIn.ToList()[0];

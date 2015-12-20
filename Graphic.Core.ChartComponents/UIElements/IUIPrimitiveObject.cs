@@ -4,14 +4,14 @@ using CoreComponents.Model;
 using System;
 namespace CoreComponents.UIElements
 {
-    public interface IUIPrimitiveObject : IIdentificable
+    public interface IUiPrimitiveObject : IIdentificable
     {
 
         Rectangle DrawableRegion { get; set; }
         bool IsSelected { get; set; }
         IEnumerable<Point> PinIn { get; }
         IEnumerable<Point> PinOut { get; }
-        UIVisualProperties UIVisualProperties { get; set; }
+        UIVisualProperties UiVisualProperties { get; set; }
         void CalculatePins();
         void Draw(Graphics g);
         bool PointIsInsideChart(Point point);

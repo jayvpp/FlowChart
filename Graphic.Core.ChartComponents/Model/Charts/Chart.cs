@@ -105,22 +105,6 @@ namespace CoreComponents.Model.Charts
             ChartTo = null;
             TryingToConnect = false;
         }
-
-        //public void SetTryingToConnect()
-        //{
-        //    this.tryingToConnect = true;
-        //}
-        //public void SetConnectionInfoFrom(Chart chartFrom)
-        //{
-        //    this.chartFrom = chartFrom;
-        //    this.tryingToConnect = true;
-        //}
-        //public void SetConnectionInfoTo(Chart chartTo)
-        //{
-        //    this.chartTo = chartTo;
-        //    this.tryingToConnect = true;
-        //}
-     
     }
 
     public class EndChart
