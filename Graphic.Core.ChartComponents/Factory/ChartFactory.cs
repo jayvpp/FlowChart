@@ -17,39 +17,31 @@ namespace CoreComponents.Factory
         private ChartFactory( )
         {
         }
-        public static ChartFactory GetFactoryInstance
-        {
-            get
-            {
-                if (singleton == null)
-                    singleton = new ChartFactory();
-                return singleton;
-            }
-        }
+        public static ChartFactory GetFactoryInstance => singleton ?? (singleton = new ChartFactory());
 
-        public  UIConditionalChart CreateConditionalUIChart()
+        public  UiConditionalChart CreateConditionalUIChart()
         {
-            var chart = new UIConditionalChart();
+            var chart = new UiConditionalChart();
            //add to repo
             return chart;
         }
 
-        public   UIStandartChart CreateStandartUIChart()
+        public   UiStandartChart CreateStandartUIChart()
         {
-            var chart = new UIStandartChart();
+            var chart = new UiStandartChart();
             //add to repo
             return chart;
         }
-        public UIConditionalChart CreateConditionalUIChart(string text)
+        public UiConditionalChart CreateConditionalUIChart(string text)
         {
-            var chart = new UIConditionalChart();
+            var chart = new UiConditionalChart();
             chart.Text = text;
             //add to repo
             return chart;
         }
-        public UIStandartChart CreateStandartUIChart(string text)
+        public UiStandartChart CreateStandartUIChart(string text)
         {
-            var chart = new UIStandartChart();
+            var chart = new UiStandartChart();
             chart.Text = text;
             //add to repo
             return chart;

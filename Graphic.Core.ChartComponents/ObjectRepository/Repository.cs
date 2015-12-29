@@ -12,19 +12,19 @@ namespace CoreComponents.ObjectRepository
 {
     public class FlowChartRepository  
     {
-        readonly List<IUiPrimitiveObject> repository;
+        readonly List<IUiChart> repository;
         public FlowChartRepository()
         {
-            repository = new List<IUiPrimitiveObject>();
+            repository = new List<IUiChart>();
         }
-        public IEnumerable<IUiPrimitiveObject> GetCharts()
+        public IEnumerable<IUiChart> GetCharts()
         {
             return repository;
         }
 
-        public void Insert(IUiPrimitiveObject element)
+        public void Insert(IUiChart element)
         {
-            IUiPrimitiveObject chart = repository.Find(e => e.Id == element.Id);
+            IUiChart chart = repository.Find(e => e.Id == element.Id);
             if (chart != null)
                 throw new InvalidOperationException();
             repository.Add(element);
@@ -32,17 +32,17 @@ namespace CoreComponents.ObjectRepository
 
         public void Remove(int elementId)
         {
-            IUiPrimitiveObject chart = repository.Find(element => element.Id == elementId);
+            IUiChart chart = repository.Find(element => element.Id == elementId);
             repository.Remove(chart);
         }
 
-        public void Remove(IUiPrimitiveObject element)
+        public void Remove(IUiChart element)
         {
-            IUiPrimitiveObject chart = repository.Find(e => e.Id == element.Id);
+            IUiChart chart = repository.Find(e => e.Id == element.Id);
             repository.Remove(chart);
         }
 
-        public void Update(IUiPrimitiveObject element)
+        public void Update(IUiChart element)
         {
             throw new NotImplementedException();
         }
