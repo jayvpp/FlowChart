@@ -11,7 +11,6 @@ namespace CoreComponents.UIElements
         bool IsSelected { get; set; }
         IEnumerable<Point> PinIn { get; }
         IEnumerable<Point> PinOut { get; }
-        UIVisualProperties UiVisualProperties { get; set; }
         void CalculatePins();
         void Draw(Graphics g);
         bool PointIsInsideChart(Point point);

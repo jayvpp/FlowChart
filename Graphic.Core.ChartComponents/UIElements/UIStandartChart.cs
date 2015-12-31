@@ -10,12 +10,18 @@ using System.ComponentModel;
 
 namespace CoreComponents.UIElements
 {
-    public class UIStandartChart : StandartChart, IUiPrimitiveObject , IObjectVisualProperties
+    public class UiStandartChart : StandartChart, IUiPrimitiveObject , IObjectVisualProperties
     {
- 
-        public UIVisualProperties UIVisualProperty = new UIVisualProperties();
+        private UiVisualProperties UIVisualProperty = new UiVisualProperties();
+        private Point centerPoint;
 
-        public event EventHandler NeedRepainting;
+        public UiStandartChart()
+        {
+            SetDefaultAppearance();
+            DrawableRegion = new Rectangle(100, 100, 180, 45);
+            CalculatePins();
+        }
+
         [Browsable(false)]
         public IEnumerable<Point> PinIn { get; private set; }
         [Browsable(false)]
@@ -24,29 +30,17 @@ namespace CoreComponents.UIElements
         public bool IsSelected { get; set; }
 
         public Rectangle DrawableRegion { get; set; }
-
-        public UIVisualProperties UiVisualProperties
-        {
-            get
-            {
-                return UIVisualProperty;
-            }
-            set
-            {
-                UIVisualProperty = value;
-            }
-        }
  
         public Font Font
         {
             get
             {
-                return UiVisualProperties.Font;
+                return UIVisualProperty.Font;
             }
 
             set
             {
-                UiVisualProperties.Font = value;
+                UIVisualProperty.Font = value;
             }
         }
 
@@ -54,12 +48,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UiVisualProperties.BorderColor;
+                return UIVisualProperty.BorderColor;
             }
 
             set
             {
-                UiVisualProperties.BorderColor = value;
+                UIVisualProperty.BorderColor = value;
             }
         }
 
@@ -67,12 +61,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UiVisualProperties.TextColor;
+                return UIVisualProperty.TextColor;
             }
 
             set
             {
-                UiVisualProperties.TextColor = value;
+                UIVisualProperty.TextColor = value;
             }
         }
 
@@ -80,12 +74,12 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UiVisualProperties.BorderWidth;
+                return UIVisualProperty.BorderWidth;
             }
 
             set
             {
-                UiVisualProperties.BorderWidth = value;
+                UIVisualProperty.BorderWidth = value;
  
             }
         }
@@ -94,15 +88,24 @@ namespace CoreComponents.UIElements
         {
             get
             {
-                return UiVisualProperties.BackgroundColor;
+                return UIVisualProperty.BackgroundColor;
             }
 
             set
             {
-                UiVisualProperties.BackgroundColor = value;
+                UIVisualProperty.BackgroundColor = value;
             }
         }
-        private Point centerPoint;
+        public virtual void SetDefaultAppearance()
+        {
+            BackgroundColor = Color.Aqua;
+            Font = new Font("Arial", 12);
+            TextColor = Color.Black;
+            BorderWidth = 4;
+            BorderColor = Color.Blue;
+            BorderWidth = 4;
+        }
+
         public Point CenterPoint
         {
             get
@@ -125,21 +128,7 @@ namespace CoreComponents.UIElements
             CalculatePinsOut();
 
         }
-        public UIStandartChart()
-        {
-            SetDefaultAppearance();
-            DrawableRegion = new Rectangle(100, 100, 180, 45);
-            CalculatePins();
-        }
-   
-        private  void CalculatePinsOut()
-        {
-            int width = DrawableRegion.Width;
-            int height = DrawableRegion.Height;
 
-            Point uniquePinOut = new Point(DrawableRegion.X +  width/2, DrawableRegion.Y + height);
-            PinOut = new List<Point>() { uniquePinOut };
-        }
         private void CalculatePinsIn()
         {
             int width = DrawableRegion.Width;
@@ -148,6 +137,15 @@ namespace CoreComponents.UIElements
             Point uniquePinIn = new Point(DrawableRegion.X + width / 2, DrawableRegion.Y);
             PinIn = new List<Point>() { uniquePinIn };
         }
+        private  void CalculatePinsOut()
+        {
+            int width = DrawableRegion.Width;
+            int height = DrawableRegion.Height;
+
+            Point uniquePinOut = new Point(DrawableRegion.X +  width/2, DrawableRegion.Y + height);
+            PinOut = new List<Point>() { uniquePinOut };
+        }
+    
 
         public virtual void Draw(Graphics g)
         {
@@ -159,28 +157,12 @@ namespace CoreComponents.UIElements
             g.DrawRectangle(ToolBox.Pen, DrawableRegion);
             g.FillRectangle(ToolBox.SolidBrush, DrawableRegion);
             ToolBox.SetSolidBrushColor(UIVisualProperty.TextColor);
-            SizeF sizeFont = g.MeasureString(Text, UiVisualProperties.Font);
-            g.DrawString(Text, UiVisualProperties.Font, ToolBox.SolidBrush, DrawableRegion.TextCoordenates(sizeFont));
+            SizeF sizeFont = g.MeasureString(Text, Font);
+            g.DrawString(Text, Font, ToolBox.SolidBrush, DrawableRegion.TextCoordenates(sizeFont));
             //DrawPins(g);
             DrawConnections(g);
         }
-
-      
-        public void SetDefaultAppearanceWithObject(UIVisualProperties uiVisualAppearance)
-        {
-            UIVisualProperty = uiVisualAppearance;
-        }
-        public virtual void SetDefaultAppearance()
-        {
-            UIVisualProperty.BackgroundColor = Color.Aqua;
-            UIVisualProperty.Font = new Font("Arial", 12);
-            UIVisualProperty.TextColor = Color.Black;
-            UIVisualProperty.BorderWidth = 4;
-            UIVisualProperty.BorderColor = Color.Blue;
-            UIVisualProperty.BorderWidth = 4;
-        }
-
-       
+ 
         public  void ObjectFocusOn()
         {
             //UIVisualProperty.BorderColor = Color.Red;
@@ -190,16 +172,9 @@ namespace CoreComponents.UIElements
         {
             //SetDefaultAppearance();
         }
-        protected void DrawPins(Graphics g)
+        public bool PointIsInsideChart(Point point)
         {
-            foreach (var pin in PinOut)
-            {
-                g.DrawEllipse(ToolBox.Pen, new Rectangle(pin, new Size(4, 4)));
-            }
-            foreach (var pin in PinIn)
-            {
-                g.DrawEllipse(ToolBox.Pen, new Rectangle(pin, new Size(4, 4)));
-            }
+            return DrawableRegion.Contains(point);
         }
 
         protected void DrawConnections(Graphics g)
@@ -226,10 +201,17 @@ namespace CoreComponents.UIElements
             g.DrawLine(ToolBox.Pen, pinOutPoint, pinInPoint);
 
         }
-        
-        public bool PointIsInsideChart(Point point)
-        {
-            return DrawableRegion.Contains(point);
-        }
+        //protected void DrawPins(Graphics g)
+        //{
+        //    foreach (var pin in PinOut)
+        //    {
+        //        g.DrawEllipse(ToolBox.Pen, new Rectangle(pin, new Size(4, 4)));
+        //    }
+        //    foreach (var pin in PinIn)
+        //    {
+        //        g.DrawEllipse(ToolBox.Pen, new Rectangle(pin, new Size(4, 4)));
+        //    }
+        //}
+
     }
 }

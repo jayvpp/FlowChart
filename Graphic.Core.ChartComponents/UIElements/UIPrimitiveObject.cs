@@ -5,9 +5,9 @@ using System.ComponentModel;
 namespace CoreComponents.UIElements
 {
 
- 
+  
     [DefaultPropertyAttribute("UIVisualProperty")]
-    public class UIVisualProperties
+    public class UiVisualProperties
     {
         public Font Font { get; set; }
  
