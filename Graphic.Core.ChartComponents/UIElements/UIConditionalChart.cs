@@ -1,173 +1,204 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
 using CoreComponents.Model;
 using CoreComponents.Model.Charts;
 
 namespace CoreComponents.UIElements
 {
-    public class UiConditionalChart : ConditionalChart, IUiPrimitiveObject, IObjectVisualProperties
+    public class UIConditionalChart : ConditionalChart, IUiPrimitiveObject ,IObjectVisualProperties
     {
-        private UiVisualProperties UIVisualProperty  = new UiVisualProperties();
-        private Point centerPoint;
+        public UIVisualProperties UIVisualProperty;
 
-        public UiConditionalChart()
-        {
 
-            SetDefaultAppearance();
-            DrawableRegion = new Rectangle(100, 100, 180, 50);
-            CalculatePins();
-        }
 
         public IEnumerable<Point> PinIn { get; private set; }
         public IEnumerable<Point> PinOut { get; private set; }
+
         public bool IsSelected { get; set; }
 
-        public Rectangle DrawableRegion { get; set; }
+        public Rectangle DrawableRegion { get;  set; }
         protected Point PinOutTrue
         {
-            get { return PinOut.ToList()[0]; }
+            get
+            {
+                return PinOut.ToList()[0];
+            }
         }
-
         protected Point PinOutFalse
         {
-            get { return PinOut.ToList()[1]; }
+            get
+            {
+                return PinOut.ToList()[1];
+            }
+        }
+
+        public UIVisualProperties UiVisualProperties
+        {
+            get
+            {
+                return UIVisualProperty;
+            }
+            set
+            {
+
+                UIVisualProperty = value;
+            }
         }
 
         public Font Font
         {
-            get { return UIVisualProperty.Font; }
+            get
+            {
+                return UiVisualProperties.Font;
+            }
 
-            set { UIVisualProperty.Font = value; }
+            set
+            {
+                UiVisualProperties.Font = value;
+            }
         }
 
 
         public Color BorderColor
         {
-            get { return UIVisualProperty.BorderColor; }
+            get
+            {
+                return UiVisualProperties.BorderColor;
+            }
 
-            set { UIVisualProperty.BorderColor = value; }
+            set
+            {
+                UiVisualProperties.BorderColor = value;
+            }
         }
 
         public Color TextColor
         {
-            get { return UIVisualProperty.TextColor; }
+            get
+            {
+                return UiVisualProperties.TextColor;
+            }
 
-            set { UIVisualProperty.TextColor = value; }
+            set
+            {
+                UiVisualProperties.TextColor = value;
+            }
         }
 
         public int BorderWidth
         {
-            get { return UIVisualProperty.BorderWidth; }
+            get
+            {
+                return UiVisualProperties.BorderWidth;
+            }
 
-            set { UIVisualProperty.BorderWidth = value; }
+            set
+            {
+                UiVisualProperties.BorderWidth = value;
+ 
+            }
         }
 
         public Color BackgroundColor
         {
-            get { return UIVisualProperty.BackgroundColor; }
+            get
+            {
+                return UiVisualProperties.BackgroundColor;
+            }
 
-            set { UIVisualProperty.BackgroundColor = value; }
+            set
+            {
+                UiVisualProperties.BackgroundColor = value;
+            }
         }
 
-        public virtual void SetDefaultAppearance()
-        {
-            BackgroundColor = Color.BlueViolet;
-            Font = new Font("Arial", 12);
-            TextColor = Color.Black;
-            BorderWidth = 4;
-            BorderColor = Color.Brown;
-            BorderWidth = 4;
-        }
-
+        private Point centerPoint;
         public Point CenterPoint
         {
             get
             {
-                var w = DrawableRegion.Width;
-                var h = DrawableRegion.Height;
-                centerPoint = new Point(DrawableRegion.X + w/2, DrawableRegion.Y + h/2);
+                int w = DrawableRegion.Width;
+                int h = DrawableRegion.Height;
+                centerPoint = new Point(DrawableRegion.X + w / 2, DrawableRegion.Y + h / 2);
                 return centerPoint;
             }
-            set
-            {
-                var pCenter = value;
-                DrawableRegion = new Rectangle(pCenter.X - DrawableRegion.Width/2, pCenter.Y - DrawableRegion.Height/2,
-                    DrawableRegion.Width, DrawableRegion.Height);
+            set {
+                Point pCenter = value;
+                DrawableRegion = new Rectangle(pCenter.X - (DrawableRegion.Width / 2), pCenter.Y - (DrawableRegion.Height/2), DrawableRegion.Width, DrawableRegion.Height);
             }
         }
 
+        public UIConditionalChart() : base()
+        {
+            UIVisualProperty = new UIVisualProperties();
+            SetDefaultAppearance();
+            DrawableRegion = new Rectangle(100, 100, 180, 50);
+            CalculatePins();
+        }
         public virtual void CalculatePins()
         {
             CalculatePinIn();
             CalculatePinOut();
         }
+
         private void CalculatePinIn()
         {
-            var width = DrawableRegion.Width;
-            var height = DrawableRegion.Height;
-            var pinIn = new Point(DrawableRegion.X + width / 2, DrawableRegion.Y);
-            PinIn = new List<Point> { pinIn };
+            int width = DrawableRegion.Width;
+            int height = DrawableRegion.Height;
+            Point pinIn = new Point(DrawableRegion.X + width / 2, DrawableRegion.Y);
+            PinIn = new List<Point>() { pinIn};
         }
 
-
-        private void CalculatePinOut()
-        {
-            var width = DrawableRegion.Width;
-            var height = DrawableRegion.Height;
-
-            var pinOutTrue = new Point(DrawableRegion.X + width, DrawableRegion.Y + height / 2);
-            var pinOutFalse = new Point(DrawableRegion.X, DrawableRegion.Y + height / 2);
-
-            PinOut = new List<Point> { pinOutTrue, pinOutFalse };
-        }
- 
         public virtual void Draw(Graphics g)
         {
-            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-            ToolBox.Pen = new Pen(BorderColor,BorderWidth);
-            var px = DrawableRegion.X;
-            var py = DrawableRegion.Y;
-            var width = DrawableRegion.Width;
-            var height = DrawableRegion.Height;
+            ToolBox.Pen = new Pen(UIVisualProperty.BorderColor, UIVisualProperty.BorderWidth);
+            int px = DrawableRegion.X;
+            int py = DrawableRegion.Y;
+            int width = DrawableRegion.Width;
+            int height = DrawableRegion.Height;
 
-            var p1 = new Point(px + width/2, py);
-            var p2 = new Point(px, py + height/2);
-            var p3 = new Point(px + width/2, py + height);
-            var p4 = new Point(px + width, py + height/2);
+            Point p1 = new Point(px + width / 2, py);
+            Point p2 = new Point(px, py + height / 2);
+            Point p3 = new Point(px + width / 2, py + height);
+            Point p4 = new Point(px + width , py + height / 2);
 
-
+           
             g.DrawLine(ToolBox.Pen, p1, p2);
             g.DrawLine(ToolBox.Pen, p2, p3);
             g.DrawLine(ToolBox.Pen, p3, p4);
             g.DrawLine(ToolBox.Pen, p4, p1);
-            g.FillPolygon(ToolBox.SetSolidBrushColor(BackgroundColor), new[] {p1, p2, p3, p4, p1});
-            var sizeFont = g.MeasureString(Text,Font);
-            g.DrawString(Text,Font, ToolBox.SetSolidBrushColor(TextColor),
-                DrawableRegion.TextCoordenates(sizeFont));
+            g.FillPolygon(ToolBox.SetSolidBrushColor(UiVisualProperties.BackgroundColor), new[] { p1, p2, p3, p4, p1 });
+            SizeF sizeFont = g.MeasureString(Text, UiVisualProperties.Font);
+            g.DrawString(Text, UiVisualProperties.Font, ToolBox.SetSolidBrushColor(UiVisualProperties.TextColor), DrawableRegion.TextCoordenates(sizeFont));
             DrawConnections(g);
         }
-
-        public void ObjectFocusOn()
+        public  void ObjectFocusOn()
         {
             //UIVisualProperty.BorderColor = Color.Red;
             //UIVisualProperty.BorderWidth = 6;
         }
 
-        public void ObjectFocusOff()
+        public  void ObjectFocusOff()
         {
-            // SetDefaultAppearance();
+           // SetDefaultAppearance();
         }
 
-        public bool PointIsInsideChart(Point point)
+
+        protected void CalculatePinOut()
         {
-            return DrawableRegion.Contains(point);
+            int width = DrawableRegion.Width;
+            int height = DrawableRegion.Height;
+
+            Point pinOutTrue = new Point(DrawableRegion.X + width ,DrawableRegion.Y + height / 2);
+            Point pinOutFalse = new Point(DrawableRegion.X, DrawableRegion.Y + height / 2);
+            
+            PinOut = new List<Point>() { pinOutTrue, pinOutFalse };
         }
 
-      
-     
         protected virtual void DrawConnections(Graphics g)
         {
             foreach (var connection in GetConnectionOut)
@@ -179,20 +210,39 @@ namespace CoreComponents.UIElements
 
         private void DrawConnectionArrow(Graphics g, IConnection connection)
         {
+
             //ToolBox.Pen.EndCap = System.Drawing.Drawing2D.LineCap.DiamondAnchor;
-            ToolBox.Pen.StartCap = LineCap.RoundAnchor;
-            ToolBox.Pen.EndCap = LineCap.ArrowAnchor;
+            ToolBox.Pen.StartCap = System.Drawing.Drawing2D.LineCap.RoundAnchor;
+            ToolBox.Pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
             ToolBox.Pen.Color = Color.Black;
 
-            var InitiatorChart = connection.InitiatorChart as IUiPrimitiveObject;
-            var TargetChart = connection.TargetChart as IUiPrimitiveObject;
+            IUiPrimitiveObject InitiatorChart = connection.InitiatorChart as IUiPrimitiveObject;
+            IUiPrimitiveObject TargetChart = connection.TargetChart as IUiPrimitiveObject;
 
-            var pinOutPoint = InitiatorChart.PinOut.ToList()[(int) connection.ConnectionType - 1];
-            var pinInPoint = TargetChart.PinIn.ToList()[0];
+            Point pinOutPoint = InitiatorChart.PinOut.ToList()[(int)connection.ConnectionType - 1];
+            Point pinInPoint = TargetChart.PinIn.ToList()[0];
 
             g.DrawLine(ToolBox.Pen, pinOutPoint, pinInPoint);
+
         }
 
-      
+        public bool PointIsInsideChart(Point point)
+        {
+            return DrawableRegion.Contains(point);
+        }
+
+        public virtual void SetDefaultAppearance()
+        {
+            UIVisualProperty.BackgroundColor = Color.BlueViolet;
+            UIVisualProperty.Font = new Font("Arial", 12);
+            UIVisualProperty.TextColor = Color.Black;
+            UIVisualProperty.BorderWidth = 4;
+            UIVisualProperty.BorderColor = Color.Brown;
+            UIVisualProperty.BorderWidth = 4;
+        }
+        public virtual void SetDefaultAppearance(UIVisualProperties visualProperties)
+        {
+            UIVisualProperty = visualProperties;
+        }
     }
 }

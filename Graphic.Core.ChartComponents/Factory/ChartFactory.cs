@@ -27,29 +27,29 @@ namespace CoreComponents.Factory
             }
         }
 
-        public  UiConditionalChart CreateConditionalUIChart()
+        public  UIConditionalChart CreateConditionalUIChart()
         {
-            var chart = new UiConditionalChart();
+            var chart = new UIConditionalChart();
            //add to repo
             return chart;
         }
 
-        public UiStandartChart CreateStandartUIChart()
+        public   UIStandartChart CreateStandartUIChart()
         {
-            var chart = new UiStandartChart();
+            var chart = new UIStandartChart();
             //add to repo
             return chart;
         }
-        public UiConditionalChart CreateConditionalUIChart(string text)
+        public UIConditionalChart CreateConditionalUIChart(string text)
         {
-            var chart = new UiConditionalChart();
+            var chart = new UIConditionalChart();
             chart.Text = text;
             //add to repo
             return chart;
         }
-        public UiStandartChart CreateStandartUIChart(string text)
+        public UIStandartChart CreateStandartUIChart(string text)
         {
-            var chart = new UiStandartChart();
+            var chart = new UIStandartChart();
             chart.Text = text;
             //add to repo
             return chart;
