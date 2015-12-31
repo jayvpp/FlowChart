@@ -56,7 +56,7 @@
     <Compile Include="UIElements\ToolBox.cs" />
     <Compile Include="UIElements\UIConditionalChart.cs" />
     <Compile Include="UIElements\GraphicsManager\GraphicsManager.cs" />
-    <Compile Include="UIElements\IUIPrimitiveObject.cs" />
+    <Compile Include="UIElements\IUiChart.cs" />
     <Compile Include="UIElements\UIStandartChart.cs" />
     <Compile Include="UIElements\UIPrimitiveObject.cs" />
   </ItemGroup>

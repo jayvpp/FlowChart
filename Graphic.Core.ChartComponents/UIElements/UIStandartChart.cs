@@ -10,12 +10,12 @@ using System.ComponentModel;
 
 namespace CoreComponents.UIElements
 {
-    public class UIStandartChart : StandartChart, IUiPrimitiveObject , IObjectVisualProperties
+    public class UiStandartChart : StandartChart, IUiChart , IObjectVisualProperties
     {
- 
-        public UIVisualProperties UIVisualProperty = new UIVisualProperties();
+        private Point centerPoint;
+        private UiVisualProperties UiVisualProperty = new UiVisualProperties();
 
-        public event EventHandler NeedRepainting;
+ 
         [Browsable(false)]
         public IEnumerable<Point> PinIn { get; private set; }
         [Browsable(false)]
@@ -25,15 +25,15 @@ namespace CoreComponents.UIElements
 
         public Rectangle DrawableRegion { get; set; }
 
-        public UIVisualProperties UiVisualProperties
+        public UiVisualProperties UiVisualProperties
         {
             get
             {
-                return UIVisualProperty;
+                return UiVisualProperty;
             }
             set
             {
-                UIVisualProperty = value;
+                UiVisualProperty = value;
             }
         }
  
@@ -102,7 +102,7 @@ namespace CoreComponents.UIElements
                 UiVisualProperties.BackgroundColor = value;
             }
         }
-        private Point centerPoint;
+     
         public Point CenterPoint
         {
             get
@@ -125,7 +125,7 @@ namespace CoreComponents.UIElements
             CalculatePinsOut();
 
         }
-        public UIStandartChart()
+        public UiStandartChart()
         {
             SetDefaultAppearance();
             DrawableRegion = new Rectangle(100, 100, 180, 45);
@@ -152,13 +152,13 @@ namespace CoreComponents.UIElements
         public virtual void Draw(Graphics g)
         {
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            ToolBox.SetSolidBrushColor(UIVisualProperty.BackgroundColor);
+            ToolBox.SetSolidBrushColor(UiVisualProperty.BackgroundColor);
             ToolBox.SetPen(BorderColor, BorderWidth);
             ToolBox.SetSolidBrushColor(BackgroundColor);
 
             g.DrawRectangle(ToolBox.Pen, DrawableRegion);
             g.FillRectangle(ToolBox.SolidBrush, DrawableRegion);
-            ToolBox.SetSolidBrushColor(UIVisualProperty.TextColor);
+            ToolBox.SetSolidBrushColor(UiVisualProperty.TextColor);
             SizeF sizeFont = g.MeasureString(Text, UiVisualProperties.Font);
             g.DrawString(Text, UiVisualProperties.Font, ToolBox.SolidBrush, DrawableRegion.TextCoordenates(sizeFont));
             //DrawPins(g);
@@ -166,25 +166,25 @@ namespace CoreComponents.UIElements
         }
 
       
-        public void SetDefaultAppearanceWithObject(UIVisualProperties uiVisualAppearance)
+        public void SetDefaultAppearanceWithObject(UiVisualProperties uiVisualAppearance)
         {
-            UIVisualProperty = uiVisualAppearance;
+            UiVisualProperty = uiVisualAppearance;
         }
         public virtual void SetDefaultAppearance()
         {
-            UIVisualProperty.BackgroundColor = Color.Aqua;
-            UIVisualProperty.Font = new Font("Arial", 12);
-            UIVisualProperty.TextColor = Color.Black;
-            UIVisualProperty.BorderWidth = 4;
-            UIVisualProperty.BorderColor = Color.Blue;
-            UIVisualProperty.BorderWidth = 4;
+            UiVisualProperty.BackgroundColor = Color.Aqua;
+            UiVisualProperty.Font = new Font("Arial", 12);
+            UiVisualProperty.TextColor = Color.Black;
+            UiVisualProperty.BorderWidth = 4;
+            UiVisualProperty.BorderColor = Color.Blue;
+            UiVisualProperty.BorderWidth = 4;
         }
 
        
         public  void ObjectFocusOn()
         {
-            //UIVisualProperty.BorderColor = Color.Red;
-            //UIVisualProperty.BorderWidth = 6;
+            //UiVisualProperty.BorderColor = Color.Red;
+            //UiVisualProperty.BorderWidth = 6;
         }
         public void ObjectFocusOff()
         {
@@ -217,8 +217,8 @@ namespace CoreComponents.UIElements
 
             ToolBox.Pen.Width = 2;
             ToolBox.Pen.Color = Color.Black;
-            IUiPrimitiveObject InitiatorChart = connection.InitiatorChart as IUiPrimitiveObject;
-            IUiPrimitiveObject TargetChart = connection.TargetChart as IUiPrimitiveObject;
+            IUiChart InitiatorChart = connection.InitiatorChart as IUiChart;
+            IUiChart TargetChart = connection.TargetChart as IUiChart;
 
             Point pinOutPoint = InitiatorChart.PinOut.ToList()[0];
             Point pinInPoint = TargetChart.PinIn.ToList()[0];
