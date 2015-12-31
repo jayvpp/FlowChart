@@ -113,9 +113,9 @@ namespace CoreComponents.UIElements
     }
     public class FlowChartMouseArg : EventArgs
     {
-        public IUiChart Obj { get;}
+        public IUiPrimitiveObject Obj { get;}
         public Point Location { get;}
-        public FlowChartMouseArg(IUiChart obj, Point location)
+        public FlowChartMouseArg(IUiPrimitiveObject obj, Point location)
         {
             Obj = obj;
             Location = location;

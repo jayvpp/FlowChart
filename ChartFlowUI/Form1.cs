@@ -41,12 +41,12 @@ namespace ChartFlowUI
 
         private void FlowChatManager_DisplayConnectMenu(FlowChartMouseArg arg)
         {
-            if (arg.Obj is UiStandartChart)
+            if (arg.Obj is UIStandartChart)
             {
                 FlowChartManager.ConnectionConfig.ChartFrom = (Chart) arg.Obj;
                 StandartConnectionMenu.Show(pictureBox1, arg.Location);
             }
-            if (arg.Obj is UiConditionalChart)
+            if (arg.Obj is UIConditionalChart)
             {
  
                 FlowChartManager.ConnectionConfig.ChartFrom = (Chart) arg.Obj;
@@ -67,7 +67,7 @@ namespace ChartFlowUI
             GraphicsManager.DrawAllObjects();
         }
 
-        private void GraphicsManager_ChangePropertyGrid(object sender, IUiChart e)
+        private void GraphicsManager_ChangePropertyGrid(object sender, IUiPrimitiveObject e)
         {
             propertyGrid1.SelectedObject = e;
  

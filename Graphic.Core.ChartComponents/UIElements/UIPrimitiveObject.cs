@@ -6,16 +6,16 @@ namespace CoreComponents.UIElements
 {
 
  
-    [DefaultPropertyAttribute("UiVisualProperty")]
-    public class UiVisualProperties
+    [DefaultPropertyAttribute("UIVisualProperty")]
+    public class UIVisualProperties
     {
         public Font Font { get; set; }
-
+ 
         public Color BorderColor { get; set; }
         public Color TextColor { get; set; }
         public int BorderWidth { get; set; }
         public Color BackgroundColor { get; set; }
-
+       
     }
     public interface IObjectVisualProperties
     {

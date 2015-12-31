@@ -12,12 +12,12 @@ namespace CoreComponents.UIElements.GraphicsManager
     public class GraphicsManager
     {
         public Graphics GraphicsHandler { get; set; }
-        public event EventHandler<IUiChart> ChartWasSelected;
+        public event EventHandler<IUiPrimitiveObject> ChartWasSelected;
         public event EventHandler RepaintScreen;
 
-        public IEnumerable<IUiChart> UiObjects { get; set; }
+        public IEnumerable<IUiPrimitiveObject> UiObjects { get; set; }
 
-        private IUiChart currentChartSelected = null;
+        private IUiPrimitiveObject currentChartSelected = null;
         private bool isMouseDown = false;
         //private Point pointInsideChart;
         public GraphicsManager(Graphics graphicsHandler)
@@ -36,7 +36,7 @@ namespace CoreComponents.UIElements.GraphicsManager
             }
         }
 
-        public IUiChart PointInInsideChart(Point point)
+        public IUiPrimitiveObject PointInInsideChart(Point point)
         {
             return UiObjects.FirstOrDefault(chart => chart.PointIsInsideChart(point));
         }

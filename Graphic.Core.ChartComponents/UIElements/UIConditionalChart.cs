@@ -7,30 +7,43 @@ using CoreComponents.Model.Charts;
 
 namespace CoreComponents.UIElements
 {
-    public  class UiConditionalChart : ConditionalChart, IUiChart ,IObjectVisualProperties
+    public class UIConditionalChart : ConditionalChart, IUiPrimitiveObject ,IObjectVisualProperties
     {
-        public UiVisualProperties UiVisualProperty;
+        public UIVisualProperties UIVisualProperty;
+
+
+
         public IEnumerable<Point> PinIn { get; private set; }
         public IEnumerable<Point> PinOut { get; private set; }
 
         public bool IsSelected { get; set; }
 
         public Rectangle DrawableRegion { get;  set; }
-
-        private Point PinOutTrue => PinOut.ToList()[0];
-
-        private Point PinOutFalse => PinOut.ToList()[1];
-
-        public UiVisualProperties UiVisualProperties
+        protected Point PinOutTrue
         {
             get
             {
-                return UiVisualProperty;
+                return PinOut.ToList()[0];
+            }
+        }
+        protected Point PinOutFalse
+        {
+            get
+            {
+                return PinOut.ToList()[1];
+            }
+        }
+
+        public UIVisualProperties UiVisualProperties
+        {
+            get
+            {
+                return UIVisualProperty;
             }
             set
             {
 
-                UiVisualProperty = value;
+                UIVisualProperty = value;
             }
         }
 
@@ -117,14 +130,14 @@ namespace CoreComponents.UIElements
             }
         }
 
-        public UiConditionalChart() : base()
+        public UIConditionalChart() : base()
         {
-            UiVisualProperty = new UiVisualProperties();
+            UIVisualProperty = new UIVisualProperties();
             SetDefaultAppearance();
             DrawableRegion = new Rectangle(100, 100, 180, 50);
             CalculatePins();
         }
-        public void CalculatePins()
+        public virtual void CalculatePins()
         {
             CalculatePinIn();
             CalculatePinOut();
@@ -132,26 +145,26 @@ namespace CoreComponents.UIElements
 
         private void CalculatePinIn()
         {
-            var width = DrawableRegion.Width;
-            var height = DrawableRegion.Height;
-            var pinIn = new Point(DrawableRegion.X + width / 2, DrawableRegion.Y);
+            int width = DrawableRegion.Width;
+            int height = DrawableRegion.Height;
+            Point pinIn = new Point(DrawableRegion.X + width / 2, DrawableRegion.Y);
             PinIn = new List<Point>() { pinIn};
         }
 
-        public void Draw(Graphics g)
+        public virtual void Draw(Graphics g)
         {
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-            ToolBox.Pen = new Pen(UiVisualProperty.BorderColor, UiVisualProperty.BorderWidth);
-            var px = DrawableRegion.X;
-            var py = DrawableRegion.Y;
-            var width = DrawableRegion.Width;
-            var height = DrawableRegion.Height;
+            ToolBox.Pen = new Pen(UIVisualProperty.BorderColor, UIVisualProperty.BorderWidth);
+            int px = DrawableRegion.X;
+            int py = DrawableRegion.Y;
+            int width = DrawableRegion.Width;
+            int height = DrawableRegion.Height;
 
-            var p1 = new Point(px + width / 2, py);
-            var p2 = new Point(px, py + height / 2);
-            var p3 = new Point(px + width / 2, py + height);
-            var p4 = new Point(px + width , py + height / 2);
+            Point p1 = new Point(px + width / 2, py);
+            Point p2 = new Point(px, py + height / 2);
+            Point p3 = new Point(px + width / 2, py + height);
+            Point p4 = new Point(px + width , py + height / 2);
 
            
             g.DrawLine(ToolBox.Pen, p1, p2);
@@ -159,14 +172,14 @@ namespace CoreComponents.UIElements
             g.DrawLine(ToolBox.Pen, p3, p4);
             g.DrawLine(ToolBox.Pen, p4, p1);
             g.FillPolygon(ToolBox.SetSolidBrushColor(UiVisualProperties.BackgroundColor), new[] { p1, p2, p3, p4, p1 });
-            var sizeFont = g.MeasureString(Text, UiVisualProperties.Font);
+            SizeF sizeFont = g.MeasureString(Text, UiVisualProperties.Font);
             g.DrawString(Text, UiVisualProperties.Font, ToolBox.SetSolidBrushColor(UiVisualProperties.TextColor), DrawableRegion.TextCoordenates(sizeFont));
             DrawConnections(g);
         }
         public  void ObjectFocusOn()
         {
-            //UiVisualProperty.BorderColor = Color.Red;
-            //UiVisualProperty.BorderWidth = 6;
+            //UIVisualProperty.BorderColor = Color.Red;
+            //UIVisualProperty.BorderWidth = 6;
         }
 
         public  void ObjectFocusOff()
@@ -175,7 +188,7 @@ namespace CoreComponents.UIElements
         }
 
 
-        private void CalculatePinOut()
+        protected void CalculatePinOut()
         {
             int width = DrawableRegion.Width;
             int height = DrawableRegion.Height;
@@ -186,11 +199,12 @@ namespace CoreComponents.UIElements
             PinOut = new List<Point>() { pinOutTrue, pinOutFalse };
         }
 
-        private void DrawConnections(Graphics g)
+        protected virtual void DrawConnections(Graphics g)
         {
-            foreach (var connection in GetConnectionOut.Where(connection => connection != null))
+            foreach (var connection in GetConnectionOut)
             {
-                DrawConnectionArrow(g, connection);
+                if (connection != null)
+                    DrawConnectionArrow(g, connection);
             }
         }
 
@@ -201,13 +215,13 @@ namespace CoreComponents.UIElements
             ToolBox.Pen.StartCap = System.Drawing.Drawing2D.LineCap.RoundAnchor;
             ToolBox.Pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
             ToolBox.Pen.Color = Color.Black;
-            
-            IUiChart initiatorChart = connection.InitiatorChart as IUiChart;
-            IUiChart targetChart = connection.TargetChart as IUiChart;
 
-            Point pinOutPoint = initiatorChart.PinOut.ToList()[(int)connection.ConnectionType - 1];
-            Point pinInPoint = targetChart.PinIn.ToList()[0];
-       
+            IUiPrimitiveObject InitiatorChart = connection.InitiatorChart as IUiPrimitiveObject;
+            IUiPrimitiveObject TargetChart = connection.TargetChart as IUiPrimitiveObject;
+
+            Point pinOutPoint = InitiatorChart.PinOut.ToList()[(int)connection.ConnectionType - 1];
+            Point pinInPoint = TargetChart.PinIn.ToList()[0];
+
             g.DrawLine(ToolBox.Pen, pinOutPoint, pinInPoint);
 
         }
@@ -217,18 +231,18 @@ namespace CoreComponents.UIElements
             return DrawableRegion.Contains(point);
         }
 
-        public void SetDefaultAppearance()
+        public virtual void SetDefaultAppearance()
         {
-            UiVisualProperty.BackgroundColor = Color.BlueViolet;
-            UiVisualProperty.Font = new Font("Arial", 12);
-            UiVisualProperty.TextColor = Color.Black;
-            UiVisualProperty.BorderWidth = 4;
-            UiVisualProperty.BorderColor = Color.Brown;
-            UiVisualProperty.BorderWidth = 4;
+            UIVisualProperty.BackgroundColor = Color.BlueViolet;
+            UIVisualProperty.Font = new Font("Arial", 12);
+            UIVisualProperty.TextColor = Color.Black;
+            UIVisualProperty.BorderWidth = 4;
+            UIVisualProperty.BorderColor = Color.Brown;
+            UIVisualProperty.BorderWidth = 4;
         }
-        public void SetDefaultAppearance(UiVisualProperties visualProperties)
+        public virtual void SetDefaultAppearance(UIVisualProperties visualProperties)
         {
-            UiVisualProperty = visualProperties;
+            UIVisualProperty = visualProperties;
         }
     }
 }
