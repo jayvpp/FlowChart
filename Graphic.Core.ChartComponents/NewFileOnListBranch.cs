@@ -1,2 +1,3 @@
-This is a new File that Exists only on list branch
-
+This file is the help for this program
+This program is an programming exercise...
+Good Luck :)
