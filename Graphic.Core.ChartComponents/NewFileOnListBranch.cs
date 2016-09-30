@@ -1,3 +1,0 @@
-This file is the help for this program
-This program is a good programming exercise to build graphical interfaces...
-Good Luck :)
